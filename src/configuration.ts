@@ -1,16 +1,18 @@
 import { Configuration } from '@midwayjs/decorator';
-import * as DefaultConfig from './config/config.default';
+import { ApolloServiceFactory } from './manager';
 
 @Configuration({
-  namespace: 'book',
+  namespace: 'apollo',
   importConfigs: [
     {
-      default: DefaultConfig,
+      default: {
+        apollo: {},
+      },
     },
   ],
 })
-export class BookConfiguration {
-  async onReady() {
-    // TODO something
+export class ApolloConfiguration {
+  async onReady(container) {
+    await container.getAsync(ApolloServiceFactory);
   }
 }

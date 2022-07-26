@@ -1,2 +1,2 @@
-export { BookConfiguration as Configuration } from './configuration';
-export * from './service/book.service';
+export { ApolloConfiguration as Configuration } from './configuration';
+export * from './manager';
