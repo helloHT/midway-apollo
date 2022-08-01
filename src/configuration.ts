@@ -15,4 +15,9 @@ export class ApolloConfiguration {
   async onReady(container) {
     await container.getAsync(ApolloServiceFactory);
   }
+
+  async onStop(container): Promise<void> {
+    const factory = await container.getAsync(ApolloServiceFactory);
+    factory.stop();
+  }
 }

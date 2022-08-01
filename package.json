@@ -34,6 +34,6 @@
     "typescript": "^4.0.0"
   },
   "dependencies": {
-    "@lvgithub/ctrip-apollo-client": "^1.0.36"
+    "@lvgithub/ctrip-apollo-client": "^1.0.37"
   }
 }
