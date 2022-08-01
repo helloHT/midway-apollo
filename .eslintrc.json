@@ -1,0 +1,10 @@
+{
+  "extends": "./node_modules/mwts/",
+  "ignorePatterns": ["node_modules", "dist", "test"],
+  "env": {
+    "node": true
+  },
+  "rules":{
+    "node/no-extraneous-import":[0]
+  }
+}

@@ -5,7 +5,7 @@ import {
   Provide,
   Scope,
   ScopeEnum,
-  Logger
+  Logger,
 } from '@midwayjs/decorator';
 import {
   ServiceFactory,
@@ -25,18 +25,23 @@ export class ApolloServiceFactory extends ServiceFactory<CtripApolloClient> {
   @Init()
   async init() {
     await this.initClients(this.apolloConfig);
-    this.logger.info('[apollo]: client connect success');
   }
 
-  protected createClient(config) {
-    const client = new CtripApolloClient(config);
-    return client;
+  protected async createClient(config) {
+    try {
+      this.logger.info('[midway:apollo] client is connecting');
+      const client = new CtripApolloClient(config);
+      await client.ready();
+      this.logger.info('[midway:apollo] client connect success');
+      return client;
+    } catch (error) {
+      this.logger.error('[midway:redis] client error: %s', error);
+    }
   }
 
   getName() {
     return 'apollo';
   }
-
 }
 
 @Provide()
@@ -45,7 +50,6 @@ export class ApolloService implements CtripApolloClient {
   @Inject()
   private serviceFactory: ApolloServiceFactory;
 
-  // @ts-expect-error used
   private instance: CtripApolloClient;
 
   @Init()
