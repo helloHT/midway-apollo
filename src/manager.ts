@@ -35,7 +35,7 @@ export class ApolloServiceFactory extends ServiceFactory<CtripApolloClient> {
       this.logger.info('[midway:apollo] client connect success');
       return client;
     } catch (error) {
-      this.logger.error('[midway:redis] client error: %s', error);
+      this.logger.error('[midway:apollo] client error: %s', error);
     }
   }
 
