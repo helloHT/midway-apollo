@@ -11,7 +11,7 @@ import {
   ServiceFactory,
   delegateTargetAllPrototypeMethod,
 } from '@midwayjs/core';
-import { CtripApolloClient } from '@lvgithub/ctrip-apollo-client';
+import { CtripApolloClient, Option } from '@lvgithub/ctrip-apollo-client';
 
 @Provide()
 @Scope(ScopeEnum.Singleton)
@@ -27,7 +27,7 @@ export class ApolloServiceFactory extends ServiceFactory<CtripApolloClient> {
     await this.initClients(this.apolloConfig);
   }
 
-  protected async createClient(config) {
+  protected async createClient(config: Option) {
     try {
       this.logger.info('[midway:apollo] client is connecting');
       const client = new CtripApolloClient(config);
@@ -35,8 +35,13 @@ export class ApolloServiceFactory extends ServiceFactory<CtripApolloClient> {
       this.logger.info('[midway:apollo] client connect success');
       return client;
     } catch (error) {
-      this.logger.error('[midway:redis] client error: %s', error);
+      this.logger.error('[midway:apollo] client error: %s', error);
     }
+  }
+
+  protected destroyClient(client: CtripApolloClient): Promise<void> {
+    client.stop();
+    return;
   }
 
   getName() {
@@ -50,7 +55,7 @@ export class ApolloService implements CtripApolloClient {
   @Inject()
   private serviceFactory: ApolloServiceFactory;
 
-  private instance: CtripApolloClient;
+  instance: CtripApolloClient;
 
   @Init()
   async init() {
