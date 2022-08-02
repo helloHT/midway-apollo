@@ -1,5 +1,8 @@
-import { Configuration } from '@midwayjs/decorator';
-import { ApolloServiceFactory } from './manager';
+import { Configuration, Inject, Init } from '@midwayjs/decorator';
+import { MidwayDecoratorService } from '@midwayjs/core';
+
+import { ApolloServiceFactory, ApolloService } from './manager';
+import { APOLLO } from './decorator';
 
 @Configuration({
   namespace: 'apollo',
@@ -12,6 +15,23 @@ import { ApolloServiceFactory } from './manager';
   ],
 })
 export class ApolloConfiguration {
+  @Inject()
+  decoratorService: MidwayDecoratorService;
+
+  @Inject()
+  apolloService: ApolloService;
+
+  @Init()
+  async init() {
+    // 实现装饰器
+    this.decoratorService.registerPropertyHandler(
+      APOLLO,
+      (propertyName, meta) => {
+        return this.apolloService.getValue(meta.key);
+      }
+    );
+  }
+
   async onReady(container) {
     await container.getAsync(ApolloServiceFactory);
   }

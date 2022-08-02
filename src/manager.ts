@@ -39,6 +39,11 @@ export class ApolloServiceFactory extends ServiceFactory<CtripApolloClient> {
     }
   }
 
+  protected destroyClient(client: CtripApolloClient): Promise<void> {
+    client.stop();
+    return;
+  }
+
   getName() {
     return 'apollo';
   }
