@@ -27,7 +27,7 @@ export class ApolloConfiguration {
     this.decoratorService.registerPropertyHandler(
       APOLLO,
       (propertyName, meta) => {
-        return this.apolloService.getValue(meta.key);
+        return this.apolloService.hotValue(meta.key).value;
       }
     );
   }
