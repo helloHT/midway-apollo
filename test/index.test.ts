@@ -1,25 +1,46 @@
 import { join } from 'path';
-
 import { close, createLightApp } from '@midwayjs/mock';
 
-import { ApolloService } from '../src';
+import { UserService } from './base-app-single-client/src/service/user';
 
 describe('/test/index.test.ts', () => {
   let app;
+
+  beforeAll(async () => {
+    app = await createLightApp(join(__dirname, './base-app-single-client'));
+  });
 
   afterAll(async () => {
     await close(app);
   });
 
-  it('test single client', async () => {
-    app = await createLightApp(join(__dirname, './base-app-single-client'));
-    const apolloService = await app
+  it('test hot value', async () => {
+    const userService: UserService = await app
       .getApplicationContext()
-      .getAsync(ApolloService);
+      .getAsync(UserService);
 
-    expect(apolloService.hotValue('mysql.port:3306').value).toBe('3306');
-    expect(apolloService.hotValue('mysql.host:127.0.0.1').value).toBe(
-      '127.0.0.1'
-    );
+    const name = userService.getName();
+
+    expect(name).toEqual('张飞');
+  });
+
+  it('test hot value default Value', async () => {
+    const userService: UserService = await app
+      .getApplicationContext()
+      .getAsync(UserService);
+
+    const className = userService.getClassName();
+
+    expect(className).toEqual('三年二班');
+  });
+
+  it('test get value', async () => {
+    const userService: UserService = await app
+      .getApplicationContext()
+      .getAsync(UserService);
+
+    const age = userService.getAge();
+
+    expect(age).toEqual('13');
   });
 });

@@ -36,7 +36,7 @@ export class ApolloServiceFactory extends ServiceFactory<CtripApolloClient> {
       return client;
     } catch (error) {
       this.logger.error('[midway:apollo] client error: %s', error);
-      return;
+      throw error;
     }
   }
 
